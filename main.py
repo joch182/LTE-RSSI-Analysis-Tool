@@ -1,54 +1,37 @@
-import os
-import glob
-from openpyxl import Workbook
-import pandas as pd
-from scipy.stats.stats import pearsonr
-from openpyxl.utils.dataframe import dataframe_to_rows
-import math
+from tkinter import filedialog
+from tkinter import *
+import backend as be
 
-files = (glob.glob(r'C:\Users\j00363316.CHINA\Desktop\RSSI Traces Cluster Trial\*.csv'))
+input_data = ""
+output_data = ""
 
-workbook = Workbook()
-sheet = workbook.active
+def submit_button():
+    print(input_data)
+    print(output_data)
+    if input_data != "" and output_data != "":
+        be.cor_cal(input_data, output_data)
 
-Results = {
-    "Cell": [],
-    "Ant0 vs Ant1": [],
-    "Ant0 vs Ant2": [],
-    "Ant0 vs Ant3": [],
-    "Ant1 vs Ant2": [],
-    "Ant1 vs Ant3": [],
-    "Ant2 vs Ant3": []
-}
+def browse_button():
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+    global input_data
+    input_data = filedialog.askdirectory() + "/*.csv"
 
-''' Magic Happens here! '''
+def output_button():
+    global output_data
+    output_data = filedialog.askdirectory()
 
-for i in range(len(files)):
-    df = pd.read_csv(files[i],skiprows=9)
-    Results['Cell'].append(os.path.splitext(os.path.basename(files[i]))[0])
-    Results['Ant0 vs Ant1'].append(pearsonr(df.iloc[:,104],df.iloc[:,105])[0])
-    if math.isnan(Results['Ant0 vs Ant1'][i]):
-        Results['Ant0 vs Ant1'][i] = -1
-    Results['Ant0 vs Ant2'].append(pearsonr(df.iloc[:,104],df.iloc[:,106])[0])
-    if math.isnan(Results['Ant0 vs Ant2'][i]):
-        Results['Ant0 vs Ant2'][i] = -1
-    Results['Ant0 vs Ant3'].append(pearsonr(df.iloc[:,104],df.iloc[:,107])[0])
-    if math.isnan(Results['Ant0 vs Ant3'][i]):
-        Results['Ant0 vs Ant3'][i] = -1
-    Results['Ant1 vs Ant2'].append(pearsonr(df.iloc[:,105],df.iloc[:,106])[0])
-    if math.isnan(Results['Ant1 vs Ant2'][i]):
-        Results['Ant1 vs Ant2'][i] = -1
-    Results['Ant1 vs Ant3'].append(pearsonr(df.iloc[:,105],df.iloc[:,107])[0])
-    if math.isnan(Results['Ant1 vs Ant3'][i]):
-        Results['Ant1 vs Ant3'][i] = -1
-    Results['Ant2 vs Ant3'].append(pearsonr(df.iloc[:,106],df.iloc[:,107])[0])
-    if math.isnan(Results['Ant2 vs Ant3'][i]):
-        Results['Ant2 vs Ant3'][i] = -1
-dataF = pd.DataFrame(data=Results)
+root = Tk()
+root.title("LTE RSSI Correlation Analyzer")
+root.geometry('500x200')
 
-''' Magic Ends here! '''
+button1 = Button(text="Input Data Folder", command=browse_button)
+button1.grid(row=0, column=0)
 
-for r in dataframe_to_rows(dataF, index=False, header=True):
-    sheet.append(r)
+button2 = Button(text="Output Results Folder", command=output_button)
+button2.grid(row=2, column=0)
 
-workbook.save(filename="Results.xlsx")
+button3 = Button(text="Submit", command=submit_button)
+button3.grid(row=4, column=0)
+
+mainloop()
