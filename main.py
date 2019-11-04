@@ -1,5 +1,6 @@
 from tkinter import filedialog
 from tkinter import *
+from tkinter.ttk import * 
 import backend as be
 
 input_data = ""
@@ -23,15 +24,18 @@ def output_button():
 
 root = Tk()
 root.title("LTE RSSI Correlation Analyzer")
-root.geometry('500x200')
+root.geometry('400x120')
 
-button1 = Button(text="Input Data Folder", command=browse_button)
-button1.grid(row=0, column=0)
+style = Style()
+style.configure('Send.TButton', font=('calibri', 10, 'bold', 'underline'), background = 'blue')
 
-button2 = Button(text="Output Results Folder", command=output_button)
-button2.grid(row=2, column=0)
+button1 = Button(text="Select Folder Where Traces Are Located", command=browse_button)
+button1.grid(row = 0, column = 3, padx = 100) 
 
-button3 = Button(text="Submit", command=submit_button)
-button3.grid(row=4, column=0)
+button2 = Button(text="Select Folder Where Results will be saved", command=output_button)
+button2.grid(row = 1, column = 3, pady = 10, padx = 100)
+
+button3 = Button(root, text="Submit", style='Send.TButton', command=submit_button)
+button3.grid(row = 2, column = 3, pady = 10, padx = 100)
 
 mainloop()
