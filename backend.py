@@ -9,8 +9,7 @@ import math
 def cor_cal(data_in, res):
     # files = (glob.glob(r'C:\Users\j00363316.CHINA\Desktop\RSSI Traces Cluster Trial\*.csv'))
     files = (glob.glob(data_in))
-    print(files)
-
+    
     workbook = Workbook()
     sheet = workbook.active
 

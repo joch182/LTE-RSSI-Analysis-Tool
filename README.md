@@ -8,3 +8,8 @@ Tool to analyze the antenna correlation based on LTE RSSI traces from Huawei net
 4) Select the folder where you want to save the results
 3) Run the tool
 4) Check the results
+
+
+# In the next link you can find the executable tool bundled for Window 10 using Python 3.7.2
+
+https://we.tl/t-uwZtu6yAGq
